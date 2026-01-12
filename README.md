@@ -75,7 +75,7 @@
 **For correctness-critical consumers:**
 - Add confirmed flag - only true after no conflicting events for N minutes
 - Return confidence_level based on warning count and time since last update
-- Provide query parameter: GET /transfers/:id?confirmed_only=true
+- Provide query parameter: GET /transfers?confirmed_only=true
 
 **What Changes If Real Money Safety Is Critical:**
 - Events with warnings queued for manual review instead of processed
