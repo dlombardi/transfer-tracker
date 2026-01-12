@@ -9,7 +9,7 @@ export interface TransferEvent {
 }
 
 export type WarningType =
-  | 'missing_transition'
+  | 'invalid_transition'
   | 'conflicting_terminal'
   | 'out_of_order';
 
@@ -53,4 +53,18 @@ export interface TransferDetailResponse {
   last_updated: string;
   warnings: Warning[];
   events: TransferEvent[];
+}
+
+// Function parameter types
+export interface TransitionCheckParams {
+  from: TransferStatus;
+  to: TransferStatus;
+}
+
+export interface ValidateTransitionParams {
+  currentStatus: TransferStatus;
+  newStatus: TransferStatus;
+  currentTimestamp: string;
+  newTimestamp: string;
+  eventId: string;
 }

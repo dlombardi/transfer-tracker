@@ -53,13 +53,13 @@ export function processEvent(event: TransferEvent): {
   stored.seen_event_ids.add(event_id);
   stored.events.push(event);
 
-  const validation = validateTransition(
-    stored.state.current_status,
-    status,
-    stored.state.last_updated,
-    timestamp,
-    event_id
-  );
+  const validation = validateTransition({
+    currentStatus: stored.state.current_status,
+    newStatus: status,
+    currentTimestamp: stored.state.last_updated,
+    newTimestamp: timestamp,
+    eventId: event_id,
+  });
 
   stored.state.warnings.push(...validation.warnings);
 

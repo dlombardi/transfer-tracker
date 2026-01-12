@@ -1,6 +1,6 @@
 export type TransferStatus = 'initiated' | 'processing' | 'settled' | 'failed';
 
-export type WarningType = 'missing_transition' | 'conflicting_terminal' | 'out_of_order';
+export type WarningType = 'invalid_transition' | 'conflicting_terminal' | 'out_of_order';
 
 export interface TransferListItem {
   id: string;

@@ -1,4 +1,9 @@
-import { TransferStatus, Warning } from './types.js';
+import {
+  TransferStatus,
+  Warning,
+  TransitionCheckParams,
+  ValidateTransitionParams,
+} from './types.js';
 
 const VALID_TRANSITIONS: Record<TransferStatus, TransferStatus[]> = {
   initiated: ['processing', 'failed'],
@@ -13,25 +18,21 @@ export function isTerminalState(status: TransferStatus): boolean {
   return TERMINAL_STATES.includes(status);
 }
 
-export function isValidTransition(from: TransferStatus, to: TransferStatus): boolean {
+export function isValidTransition({ from, to }: TransitionCheckParams): boolean {
   return VALID_TRANSITIONS[from].includes(to);
-}
-
-export function getValidNextStates(status: TransferStatus): TransferStatus[] {
-  return VALID_TRANSITIONS[status];
 }
 
 export interface TransitionValidationResult {
   warnings: Warning[];
 }
 
-export function validateTransition(
-  currentStatus: TransferStatus,
-  newStatus: TransferStatus,
-  currentTimestamp: string,
-  newTimestamp: string,
-  eventId: string
-): TransitionValidationResult {
+export function validateTransition({
+  currentStatus,
+  newStatus,
+  currentTimestamp,
+  newTimestamp,
+  eventId,
+}: ValidateTransitionParams): TransitionValidationResult {
   const warnings: Warning[] = [];
   const now = new Date().toISOString();
 
@@ -53,10 +54,10 @@ export function validateTransition(
     });
   }
 
-  if (!isValidTransition(currentStatus, newStatus) &&
+  if (!isValidTransition({ from: currentStatus, to: newStatus }) &&
       !(isTerminalState(currentStatus) && isTerminalState(newStatus))) {
     warnings.push({
-      type: 'missing_transition',
+      type: 'invalid_transition',
       message: `Invalid transition from ${currentStatus} to ${newStatus}`,
       event_id: eventId,
       detected_at: now,
